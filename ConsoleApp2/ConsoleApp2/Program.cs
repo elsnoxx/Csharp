@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -166,7 +167,7 @@ namespace ConsoleApp2
                     }
 
                 }
-                if (isPrime)
+                if (isPrime & i < 2000001)
                 {
                     sum += i;
                     Console.Write(i);
@@ -174,10 +175,6 @@ namespace ConsoleApp2
                     Console.Write(sum);
                     Console.WriteLine();
                     
-                }
-                if (i > 2000001)
-                {
-                    end = false;
                 }
                 isPrime = true;
             }
@@ -207,17 +204,153 @@ namespace ConsoleApp2
                 { 20, 73, 35, 29, 78, 31, 90, 01, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 05, 54 },
                 { 01, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 01, 89, 19, 67, 48 }
             };
-            int row = 1;
-            for (int i = 0; i < 20; i++)
+            int down = 1;
+            int downMax = 0;
+            int right = 1;
+            int rightMax = 0;
+            int left = 1;
+            int leftMax = 0;
+            int diagonal = 1;
+            int diagonalMax = 0;
+
+            int newX = 0;
+            int newY = 0;
+            for (int x = 0; x < 20; x++)
             {
-                for (int j = 0; j < 4; j++)
+                if (x >= 17)
                 {
-                    row *= array2D[j, i];
-                    Console.Write(array2D[j, i]);
-                    Console.Write(' ');
+                    break;
                 }
-                Console.WriteLine(row);
-                row = 1;
+                for (int y = 0; y < 20; y++)
+                {
+                    
+                    for (int i = 0; i < 4;i++) 
+                    {
+                        newX = x + i;
+                        
+                        down *= array2D[newX, y];                      
+                    }
+                    if (down > downMax)
+                    {
+                        downMax = down;
+                    }
+                    
+                    down = 1;
+                    
+                }
+            }
+
+            Console.WriteLine("Down max: "+downMax);
+
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newY = y + i;
+                        if (y >= 17)
+                        {
+                            break;
+                        }
+                        right *= array2D[newY, y];
+                    }
+                    if (right > rightMax)
+                    {
+                        rightMax = right;
+                    }
+                    right = 1;
+
+                }
+            }
+            Console.WriteLine("Right max: " + rightMax);
+
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    if (x >= 17 | y >= 17)
+                    {
+                        break;
+                    }
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        
+                        newY = y + i;
+                        newX= x + i;
+                        if (newY >= 17 | newX >= 17)
+                        {
+                            break;
+                        }
+                        diagonal *= array2D[newX, newY];
+                    }
+                }
+
+                if (diagonal > diagonalMax)
+                {
+                    diagonalMax = diagonal;
+                }
+                diagonal = 1;
+            }
+            Console.WriteLine("Diagonal max: " + diagonalMax);
+
+            for (int x = 19; x >= 0; x--)
+            {
+                for (int y = 19; y >= 0; y--)
+                {
+                    if (y < 3)
+                    {
+                        break;
+                    }
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newY = y - i;
+                        left *= array2D[newY, y];
+                    }
+                    if (left > leftMax)
+                    {
+                        leftMax = left;
+                    }
+                    left = 1;
+
+                }
+            }
+            Console.WriteLine("Left max: " + leftMax);
+
+        }
+
+
+        static void triangular_number()
+        {
+            bool end = true;
+            int triangular = 0;
+            int count = 0;
+            int cnt = 0;
+            for (int i = 1; end; i++)
+            {
+                triangular += i;
+                count+=1;
+                Console.Write(count + " : " + triangular + " : ");
+                for (int j = 1; j < count; j++)
+                {
+                    if (triangular % j == 0)
+                    {
+                        cnt++;
+                        Console.Write(" " + j);
+                    }
+                    if (triangular <= j)
+                    {
+                        break;
+                    }
+                }
+                if (cnt > 500)
+                {
+                    end = false;
+                }
+
+                Console.WriteLine(" : " + cnt);
+                cnt = 0;
             }
         }
         static void Main(string[] args)
@@ -230,8 +363,8 @@ namespace ConsoleApp2
             //Done  prime();
             //Done  Pythagorean();
             // SumOfPrime();
-            Grid();
-
+            // Grid();
+            triangular_number();
         }
     }
 }
