@@ -1,108 +1,348 @@
-
-using System.Net;
-using System.Linq.Expressions;
 using System.Net.NetworkInformation;
-using System.Security.Cryptography.X509Certificates;
+using System.Net;
+using System.Runtime.Intrinsics.X86;
 
-void foo()
+namespace geip
 {
-    // Console.WriteLine("new app");
-    //Console.WriteLine("\n");
-    //display();
-    //Console.WriteLine("\n");
-    
-    //Console.WriteLine("\n");
-    //hostByName();
-
-    Console.WriteLine("\n");
-    ipddress();
-    Console.ReadLine();
-}
-
-
-void display(string ipaddress)
-{
-    try
+    internal class Program
     {
-        Ping myPing = new Ping();
-        PingReply reply = myPing.Send(ipaddress, 100);
-        if (reply != null)
+        static int display(string ipaddress)
         {
-            Console.WriteLine("Status: " + reply.Status + "\n time: " + reply.RoundtripTime.ToString() + "\n Addres: " + reply.Address);
+            try
+            {
+                Ping myPing = new Ping();
+                PingReply reply = myPing.Send(ipaddress, 100);
+                if (reply != null)
+                {
+                    if (reply.Status.ToString() == "TimedOut")
+                    {
+                        // Console.WriteLine("Status: " + reply.Status + "\n time: " + reply.RoundtripTime.ToString() + "\n Addres: " + reply.Address);
+                        return 1;
+                    }
+                    return 0;
+                }
+
+            }
+            catch
+            {
+                // Console.WriteLine("Error: timeout");
+                return 1;
+            }
+
+            return 0;
+        }
+        static void ERR(string ipaddress)
+        {
+            try
+            {
+                Ping myPing = new Ping();
+                PingReply reply = myPing.Send(ipaddress, 100);
+                if (reply != null)
+                {
+                    Console.WriteLine("Status: " + reply.Status + "\n time: " + reply.RoundtripTime.ToString() + "\n Addres: " + reply.Address);
+                }
+            }
+            catch
+            {
+                Console.WriteLine("Error: timeout");
+            }
+        }
+
+        static int SUB_Sticking()
+        {
+            Console.WriteLine("SUB Sticking");
+            int cnt = 0;
+            for (int i = 95; i < 101; i++)
+            {
+                string ip = "10.122.240." + i;
+                System.Threading.Thread.Sleep(1000);
+                if (display(ip) == 0)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+            }
+            return cnt;
+        }
+        static int SUV_Cush()
+        {
+            Console.WriteLine("SUV Cush");
+            int cnt = 0;
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.240.126") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.126");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.240.128") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.128");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.240.132") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.132");
+            }
+            return cnt;
+        }
+        static int SUV_Rear()
+        {
+            Console.WriteLine("SUV Rear");
+            int cnt = 0;
+            for (int i = 115; i < 126; i++)
+            {
+                string ip = "10.122.240." + i;
+                if (display(ip) == 0 && i != 121 && i != 122)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+                System.Threading.Thread.Sleep(1000);
+
+            }
+            return cnt;
+        }
+        static int SUV_Front()
+        {
+            Console.WriteLine("SUV Front");
+            int cnt = 0;
+            for (int i = 70; i < 94; i++)
+            {
+                string ip = "10.122.240." + i;
+                if (display(ip) == 0)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+                System.Threading.Thread.Sleep(1000);
+            }
+            return cnt;
+        }
+        static int PD_Rear()
+        {
+            Console.WriteLine("PD Rear");
+            int cnt = 0;
+            for (int i = 170; i < 176; i++)
+            {
+                string ip = "10.122.240." + i;
+                System.Threading.Thread.Sleep(1000);
+                if (display(ip) == 0)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+            }
+
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.240.198") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.198");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.240.163") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.163");
+            }
+            return cnt;
+        }
+        static int PD_Front()
+        {
+            Console.WriteLine("PD Front");
+            int cnt = 0;
+            for (int i = 133; i < 148; i++)
+            {
+
+                string ip = "10.122.240." + i;
+                System.Threading.Thread.Sleep(1000);
+                if (display(ip) == 0 & i != 142 & i != 143)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+            }
+            return cnt;
+        }
+        static int Foam_Pad()
+        {
+            Console.WriteLine("Foam Pad");
+            int cnt = 0;
+            for (int i = 66; i < 73; i++)
+            {
+                string ip = "10.122.245." + i;
+                System.Threading.Thread.Sleep(1000);
+                if (display(ip) == 0)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+            }
+            for (int i = 79; i < 89; i++)
+            {
+                string ip = "10.122.245." + i;
+                System.Threading.Thread.Sleep(1000);
+                if (display(ip) == 0)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    ERR(ip);
+                }
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.245.95") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.245.95");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.245.96") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.126");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.245.102") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.126");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.245.103") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.240.126");
+            }
+            
+            return cnt;
+        }
+
+        static int CLS()
+        {
+            Console.WriteLine("CLS a WMS");
+            int cnt = 0;
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.246.195") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.246.195");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.246.196") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.246.196");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.246.194") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.246.194");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.122.246.199") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.246.199");
+            }
+            System.Threading.Thread.Sleep(1000);
+            if (display("10.36.139.25") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.36.139.25");
+            }
+            if (display("10.122.246.193") == 0)
+            {
+                cnt++;
+            }
+            else
+            {
+                ERR("10.122.246.193");
+            }
+            return cnt;
+        }
+        static void Main(string[] args)
+        {
+            bool end = true;
+            while (end)
+            {
+                int[] array = { SUV_Front(), SUV_Rear(), SUV_Cush(), SUB_Sticking(), PD_Rear(), PD_Front(), Foam_Pad(), CLS() };
+                Console.WriteLine("\n \n \n \n \n \n \n \n \n");
+                Console.WriteLine("\n Testing -> SUV Front  -> " + array[0] + "/24 \n");
+                Console.WriteLine("\n Testing -> SUV Rear " + array[1] + "/11 \n");
+                Console.WriteLine("\n Testing -> SUV Cush " + array[2] + "/3 \n");
+                Console.WriteLine("\n Testing -> SUB Sticking " + array[3] + "/6 \n");
+                Console.WriteLine("\n Testing -> PD Rear " + array[4] + "/8\n");
+                Console.WriteLine("\n Testing -> PD Front " + array[5] + "/14\n");
+                Console.WriteLine("\n Testing -> Foam Pad " + array[6] + "/21\n");
+                Console.WriteLine("\n Testing -> CLS " + array[7] + "/6\n");
+            }
         }
     }
-    catch
-    {
-        Console.WriteLine("Error: timeout");
-    }
 }
-
-void hostByIP4(string ipaddres)
-{
-    
-    IPAddress hostIPAddress = IPAddress.Parse(ipaddres);
-    IPHostEntry hostInfo = Dns.GetHostByAddress(hostIPAddress);
-    IPAddress[] address = hostInfo.AddressList;
-    String[] alias = hostInfo.Aliases;
-
-    Console.WriteLine("Host name : " + hostInfo.HostName);
-    Console.WriteLine("\nAliases :");
-    for (int index = 0; index < alias.Length; index++)
-    {
-        Console.WriteLine(alias[index]);
-    }
-    Console.WriteLine("\nIP address list : ");
-    for (int index = 0; index < address.Length; index++)
-    {
-        Console.WriteLine(address[index]);
-    }
-    
-    
-
-}
-
-void hostByName()
-{
-    string hostName = "RisaHP";
-    IPHostEntry hostInfo = Dns.GetHostByName(hostName);
-    IPAddress[] address = hostInfo.AddressList;
-
-    String[] alias = hostInfo.Aliases;
-
-    Console.WriteLine("Host name : " + hostInfo.HostName);
-    Console.WriteLine("\nAliases : ");
-
-    for (int index = 0; index < alias.Length; index++)
-    {
-        Console.WriteLine(alias[index]);
-    }
-
-    Console.WriteLine("\nIP address list : ");
-    for (int index = 0; index < address.Length; index++)
-    {
-        Console.WriteLine(address[index]);
-    }
-}
-
-void ipddress()
-{
-    for (int i = 0; i < 10; i++)
-    {
-        Console.WriteLine("\n");
-        Random rnd = new Random();
-        string ip = "10.122.10." + rnd.Next(256);
-        Console.WriteLine(ip);
-        System.Threading.Thread.Sleep(1000);
-        display(ip);
-        hostByIP4(ip);
-    }
-}
-
-
-
-
-
-foo();
-
-
 
